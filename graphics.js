@@ -139,8 +139,31 @@ function setGray() {
 }
 
 function copyImage() {
-  html2canvas(document.querySelector(".copyable"))
-    .then(canvas => canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})])));
+  copyCanvasContentsToClipboard(document.querySelector(".copyable"), copiedText, onError);
+  // html2canvas(document.querySelector(".copyable"))
+  //   .then(canvas => canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})])));
+  // let copiedText = createSpan('Copied to clipboard!');
+  // setTimeout(() => {  copiedText.remove(); }, 2000);
+}
+
+function copiedText() {
+  console.log("Copied!");
   let copiedText = createSpan('Copied to clipboard!');
-  setTimeout(() => {  copiedText.remove(); }, 2000);
+    setTimeout(() => {  copiedText.remove(); }, 2000);
+}
+
+function onError(error) {
+  console.log(error);
+}
+
+function copyCanvasContentsToClipboard(canvas, onDone, onError) {
+  canvas.toBlob(function (blob) {
+    let data = [new ClipboardItem({ 'image/png': blob })];
+
+    navigator.clipboard.write(data).then(function () {
+      onDone();
+    }, function (err) {
+      onError(err);
+    })
+  });
 }
