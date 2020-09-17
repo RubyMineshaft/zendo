@@ -1,6 +1,6 @@
 
 
-let size = 7;
+let size = 5;
 let board = new Board(size, size);
 const R = 20;
 const D = 2 * R;
@@ -12,7 +12,7 @@ function setup() {
   bg = "gray"
 
     let canv = createCanvas(width, height).mouseClicked(place);
-    canv.addClass('copyable');
+    // canv.addClass('copyable');
     ellipseMode(RADIUS)
     strokeCap(PROJECT)
     textSize(25)
@@ -53,6 +53,7 @@ function setSize(newSize) {
   width = board.width * D + D;
   height = board.height * D + D;
   resizeCanvas((size * D + D), (size * D + D));
+  redraw()
 }
 
 
