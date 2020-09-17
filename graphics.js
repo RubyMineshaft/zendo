@@ -12,15 +12,19 @@ function setup() {
   bg = "gray"
 
     let canv = createCanvas(width, height).mouseClicked(place);
-    // canv.addClass('copyable');
+    canv.addClass('copyable');
     ellipseMode(RADIUS)
     strokeCap(PROJECT)
     textSize(25)
     textAlign(CENTER, CENTER)
 
-    saveButton = createButton('Copy Image');
-    saveButton.position(19, 19);
-    saveButton.mousePressed(copyImage);
+    copyButton = createButton('Copy Image');
+    copyButton.position(19, 19);
+    copyButton.mousePressed(copyImage);
+
+    saveButton = createButton('Save to Device');
+    saveButton.position(117, 19);
+    saveButton.mousePressed(saveCanvas);
 
     fiveFive = createButton('5 x 5');
     fiveFive.position(19,50);
@@ -49,11 +53,10 @@ function setup() {
 
 function setSize(newSize) {
   size = newSize;
+  resizeCanvas((size * D + D), (size * D + D))
   board = new Board(size, size);
   width = board.width * D + D;
   height = board.height * D + D;
-  resizeCanvas((size * D + D), (size * D + D));
-  redraw()
 }
 
 
