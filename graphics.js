@@ -1,4 +1,5 @@
 
+
 let size = 7;
 let board = new Board(size, size);
 const R = 20;
@@ -10,15 +11,16 @@ function setup() {
   placeColor = 1
   bg = "gray"
 
-    createCanvas(width, height).mouseClicked(place)
+    let canv = createCanvas(width, height).mouseClicked(place);
+    canv.addClass('copyable');
     ellipseMode(RADIUS)
     strokeCap(PROJECT)
     textSize(25)
     textAlign(CENTER, CENTER)
 
-    saveButton = createButton('Save as image');
+    saveButton = createButton('Copy Image');
     saveButton.position(19, 19);
-    saveButton.mousePressed(saveCanvas);
+    saveButton.mousePressed(copyImage);
 
     fiveFive = createButton('5 x 5');
     fiveFive.position(19,50);
@@ -134,4 +136,11 @@ function setRed() {
 
 function setGray() {
   bg = "gray";
+}
+
+function copyImage() {
+  html2canvas(document.querySelector(".copyable"))
+    .then(canvas => canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})])));
+  let copiedText = createSpan('Copied to clipboard!');
+  setTimeout(() => {  copiedText.remove(); }, 2000);
 }
