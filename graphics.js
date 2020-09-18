@@ -24,7 +24,7 @@ function setup() {
 
     saveButton = createButton('Save to Device');
     saveButton.position(117, 19);
-    saveButton.mousePressed(saveCanvas);
+    saveButton.mousePressed(saveToFile);
 
     fiveFive = createButton('5 x 5');
     fiveFive.position(19,50);
@@ -146,8 +146,9 @@ function copyImage() {
   copyCanvasContentsToClipboard(document.querySelector(".copyable"), copiedText, onError);
 }
 
-function copiedText() {
+function copiedText(data) {
   console.log("Copied!");
+  console.log(data)
   let copiedText = createSpan('Copied to clipboard!');
     setTimeout(() => {  copiedText.remove(); }, 2000);
 }
@@ -156,14 +157,33 @@ function onError(error) {
   console.log(error);
 }
 
+const scaleCanvas = (canvas, scale) => {
+  const scaledCanvas = document.createElement('canvas');
+  scaledCanvas.width = canvas.width * scale;
+  scaledCanvas.height = canvas.height * scale;
+
+  scaledCanvas
+    .getContext('2d')
+    .drawImage(canvas, 0, 0, scaledCanvas.width, scaledCanvas.height);
+
+  return scaledCanvas;
+};
+
 function copyCanvasContentsToClipboard(canvas, onDone, onError) {
-  canvas.toBlob(function (blob) {
+  scaleCanvas(canvas, .5).toBlob(function (blob) {
     let data = [new ClipboardItem({ 'image/png': blob })];
 
     navigator.clipboard.write(data).then(function () {
-      onDone();
+      onDone(data);
     }, function (err) {
       onError(err);
     })
   });
+}
+
+
+function saveToFile() {
+  const canvas = scaleCanvas(document.querySelector(".copyable"), .5);
+
+  saveCanvas(canvas, 'GoKoan', 'png');
 }
