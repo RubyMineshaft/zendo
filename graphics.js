@@ -144,10 +144,6 @@ function setGray() {
 
 function copyImage() {
   copyCanvasContentsToClipboard(document.querySelector(".copyable"), copiedText, onError);
-  // html2canvas(document.querySelector(".copyable"))
-  //   .then(canvas => canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})])));
-  // let copiedText = createSpan('Copied to clipboard!');
-  // setTimeout(() => {  copiedText.remove(); }, 2000);
 }
 
 function copiedText() {
