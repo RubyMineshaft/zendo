@@ -252,6 +252,8 @@ $(document).ready(function() {
     let id = document.getElementById('loadId').value;
     let url = "https://agile-sands-06400.herokuapp.com/api/v1/boards/" + id;
 
+    document.getElementById('loadId').value = '';
+
     fetch(url, {
       method: "get"
     }).then(res => res.json())
