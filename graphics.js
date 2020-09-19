@@ -195,7 +195,7 @@ function saveImage() {
 function saveToFile() {
   const canvas = scaleCanvas(document.querySelector(".copyable"), .5);
 
-  saveCanvas(canvas, 'GoKoan', 'png');
+  saveCanvas(canvas, `Koan_${board.id}`, 'png');
 }
 
 function drawWords() {
