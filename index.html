@@ -5,6 +5,9 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.min.js"></script> -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 	<script src="board.js"></script>
 	<script src="graphics.js"></script>
 
@@ -15,5 +18,20 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 	<!-- <link rel="shortcut icon" type="image/png" href="icon.png">
 	<link rel="apple-touch-icon" sizes="256x256" href="icon.png"> -->
+	<body>
+		<div id="board-wrapper">
+			<div id="board">
+			</div>
+			<div id="load-form">
+				<form>
+					<label for="loadId" type="label">Load Koan:</label> <br />
+					<input type="number" name="loadId" placeholder="Koan ID" id="loadId">
+					<input type="submit" value="Load" id="load">
+				</form>
+			</div>
+		</div>
+		<br />
+
+	</body>
 </head>
 </html>

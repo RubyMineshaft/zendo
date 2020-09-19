@@ -9,6 +9,14 @@ body {
   align-items: center;
 }
 
+#board {
+  min-width: 100%;
+}
+
+#load-form {
+  padding-top: 10px;
+}
+
 span {
     padding: 10px;
     border: 5px solid black;
