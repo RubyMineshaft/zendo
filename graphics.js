@@ -25,7 +25,7 @@ function setup() {
 
     saveButton = createButton('Download to Device');
     saveButton.position(117, 19);
-    saveButton.mousePressed(saveToFile);
+    saveButton.mousePressed(saveImage);
 
     fiveFive = createButton('5 x 5');
     fiveFive.position(19,50);
@@ -188,6 +188,9 @@ function copyCanvasContentsToClipboard(canvas, onDone, onError) {
   });
 }
 
+function saveImage() {
+  postToAPI(saveToFile);
+}
 
 function saveToFile() {
   const canvas = scaleCanvas(document.querySelector(".copyable"), .5);
@@ -205,7 +208,7 @@ function drawWords() {
   text(board.id, -30, height - 55);
 }
 
-function saveToServer() {
+function postToAPI(after) {
   const data = {
     "board": {
       "size": board.size,
@@ -225,8 +228,13 @@ function saveToServer() {
         updateBoard(res);
       }})
     .then( () => {
-      setTimeout(() => {  copyImage() }, 100);
+      setTimeout(() => {  after() }, 100);
     }).catch(err => console.log(err))
+
+}
+
+function saveToServer() {
+  postToAPI(copyImage);
 }
 
 $(document).ready(function() {
