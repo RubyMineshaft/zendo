@@ -12,8 +12,8 @@ function setup() {
   bg = board.color
 
     let canv = createCanvas(width, height).mouseClicked(place);
-    canv.addClass('copyable');
-    canv.parent('board');
+    canv.addClass('copyable')
+    canv.parent("board")
     ellipseMode(RADIUS)
     strokeCap(PROJECT)
     textSize(18)
