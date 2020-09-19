@@ -238,6 +238,15 @@ function saveToServer() {
 }
 
 $(document).ready(function() {
+
+  $('#menuSave').on('click', function(e){
+    saveToServer();
+  })
+
+  $('#menuDownload').on('click', function(e){
+    saveImage();
+  })
+
   $('form').on('submit', function(e){
     e.preventDefault();
     let id = document.getElementById('loadId').value;
