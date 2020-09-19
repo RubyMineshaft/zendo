@@ -7,10 +7,13 @@ class BoardNode {
 
 class Board {
     constructor(width, height) {
+        this.size = width;
         this.width = width
         this.height = height
         this.turn = 1
         this.nodes = new Set()
+        this.color = 'gray';
+        
 
         for (let x = 0; x < this.width; x ++) {
             this[x] = {}
