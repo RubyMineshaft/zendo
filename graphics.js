@@ -1,5 +1,5 @@
 
-
+let response;
 let size = 5;
 let board = new Board(size, size);
 const R = 20;
@@ -9,20 +9,21 @@ const D = 2 * R;
 
 function setup() {
   placeColor = 1
-  bg = "gray"
+  bg = board.color
 
     let canv = createCanvas(width, height).mouseClicked(place);
     canv.addClass('copyable');
+    canv.parent('board');
     ellipseMode(RADIUS)
     strokeCap(PROJECT)
-    textSize(25)
+    textSize(18)
     textAlign(CENTER, CENTER)
 
-    copyButton = createButton('Copy Image');
+    copyButton = createButton('Save & Copy');
     copyButton.position(19, 19);
-    copyButton.mousePressed(copyImage);
+    copyButton.mousePressed(saveToServer);
 
-    saveButton = createButton('Save to Device');
+    saveButton = createButton('Download to Device');
     saveButton.position(117, 19);
     saveButton.mousePressed(saveToFile);
 
@@ -62,7 +63,7 @@ function setSize(newSize) {
 
 
 function draw() {
-    background(bg)
+    background(board.color)
 
     stroke(0)
     strokeWeight(2)
@@ -96,6 +97,12 @@ function draw() {
         if (keyIsDown(90)) node.color = 1
         if (keyIsDown(88)) node.color = -1
         if (keyIsDown(67)) node.color = 0
+    }
+
+    textSize(25);
+    textAlign(LEFT);
+    if (board.id) {
+      drawWords();
     }
 }
 
@@ -131,15 +138,15 @@ function resizeBoard9() {
 }
 
 function setGreen() {
-  bg = 'lime';
+  board.color = 'lime';
 }
 
 function setRed() {
-  bg = "red";
+  board.color = "red";
 }
 
 function setGray() {
-  bg = "gray";
+  board.color = "gray";
 }
 
 function copyImage() {
@@ -148,7 +155,7 @@ function copyImage() {
 
 function copiedText(data) {
   console.log("Copied!");
-  console.log(data)
+
   let copiedText = createSpan('Copied to clipboard!');
     setTimeout(() => {  copiedText.remove(); }, 2000);
 }
@@ -186,4 +193,70 @@ function saveToFile() {
   const canvas = scaleCanvas(document.querySelector(".copyable"), .5);
 
   saveCanvas(canvas, 'GoKoan', 'png');
+}
+
+function drawWords() {
+  if (board.color == "lime") {
+    fill(0);
+  } else {
+    fill("white");
+  }
+
+  text(board.id, -30, height - 55);
+}
+
+function saveToServer() {
+  const data = {
+    "board": {
+      "size": board.size,
+      "state": JSON.stringify(board)
+    }
+  };
+
+  fetch("https://agile-sands-06400.herokuapp.com/api/v1/boards", {
+    method: "post",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }).then(res => res.json())
+    .then(res => {
+      if (res.errors) {
+        console.log(res.errors)
+      } else {
+        updateBoard(res);
+      }})
+    .then( () => {
+      setTimeout(() => {  copyImage() }, 100);
+    }).catch(err => console.log(err))
+}
+
+$(document).ready(function() {
+  $('form').on('submit', function(e){
+    e.preventDefault();
+    let id = document.getElementById('loadId').value;
+    let url = "https://agile-sands-06400.herokuapp.com/api/v1/boards/" + id;
+
+    fetch(url, {
+      method: "get"
+    }).then(res => res.json())
+      .then(res => {
+        if (res.errors) {
+          console.log(res.errors)
+        } else {
+          updateBoard(res);
+        }})
+
+  });
+});
+
+function updateBoard(res) {
+
+  console.log(res);
+
+  if (size !== res.data.size) {
+    size = res.data.size;
+    setSize(size);
+  }
+
+  board = JSON.parse(res.data.state);
+  board.id = res.data.id;
 }
